@@ -16,8 +16,7 @@ import com.google.gson.JsonObject;
 
 public class ClassData
 {
-	private HashMap<String, MethodData> methods =
-		new HashMap<String, MethodData>();
+	private HashMap<String, MethodData> methods = new HashMap<String, MethodData>();
 	private int hooks;
 	
 	public MethodData getMethod(String name)

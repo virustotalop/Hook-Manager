@@ -46,9 +46,14 @@ public class EditorBridge
 	public void showSelectClassMessage()
 	{
 		editor.setHTMLFile("editor-message.html");
-		editor
-			.doWhenFinished(() -> editor
-				.executeScriptAsync("setMessage('Select a class to start injecting hooks.')"));
+		editor.doWhenFinished(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				editor.executeScriptAsync("setMessage('Select a class to start injecting hooks.')");
+			}
+		});
 	}
 	
 	public void toggleHook(String methodName, String position)

@@ -15,8 +15,7 @@ import com.google.gson.JsonObject;
 
 public class MethodData
 {
-	private HashMap<HookPosition, HookData> hooks =
-		new HashMap<HookPosition, HookData>();
+	private HashMap<HookPosition, HookData> hooks = new HashMap<HookPosition, HookData>();
 	private ClassData parent;
 	
 	public MethodData(ClassData parent)
@@ -26,37 +25,36 @@ public class MethodData
 	
 	public HookData getHook(HookPosition pos)
 	{
-		return hooks.get(pos);
+		return this.hooks.get(pos);
 	}
 	
 	public HookData addHook(HookPosition pos, HookData data)
 	{
-		parent.addHook();
-		return hooks.put(pos, data);
+		this.parent.addHook();
+		return this.hooks.put(pos, data);
 	}
 	
 	public HookData removeHook(HookPosition pos)
 	{
-		parent.removeHook();
-		return hooks.remove(pos);
+		this.parent.removeHook();
+		return this.hooks.remove(pos);
 	}
 	
 	public boolean hasHooks()
 	{
-		return !hooks.isEmpty();
+		return !this.hooks.isEmpty();
 	}
 	
 	public boolean hasHookAt(HookPosition pos)
 	{
-		return hooks.containsKey(pos);
+		return this.hooks.containsKey(pos);
 	}
 	
 	public JsonObject toJson()
 	{
 		JsonObject json = new JsonObject();
 		JsonObject jsonHooks = new JsonObject();
-		Iterator<Entry<HookPosition, HookData>> itr =
-			hooks.entrySet().iterator();
+		Iterator<Entry<HookPosition, HookData>> itr = this.hooks.entrySet().iterator();
 		while(itr.hasNext())
 		{
 			Entry<HookPosition, HookData> entry = itr.next();

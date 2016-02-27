@@ -58,9 +58,9 @@ public class JarData
 		json.add("classes", jsonClasses);
 		try(FileOutputStream output = new FileOutputStream(file))
 		{
-			output.write(new GsonBuilder().setPrettyPrinting().create()
-				.toJson(json).getBytes("UTF-8"));
-		}catch(IOException e1)
+			output.write(new GsonBuilder().setPrettyPrinting().create().toJson(json).getBytes("UTF-8"));
+		}
+		catch(IOException e1)
 		{
 			e1.printStackTrace();
 		}

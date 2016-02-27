@@ -23,10 +23,11 @@ public final class Constants
 		try
 		{
 			currentDirectory =
-				URLDecoder.decode(Constants.class.getProtectionDomain()
-					.getCodeSource().getLocation().getPath(), "UTF-8");
+			URLDecoder.decode(Constants.class.getProtectionDomain()
+			.getCodeSource().getLocation().getPath(), "UTF-8");
 			currentDirectory = new File(currentDirectory).getAbsolutePath();
-		}catch(UnsupportedEncodingException e)
+		}
+		catch(UnsupportedEncodingException e)
 		{
 			e.printStackTrace();
 		}
@@ -35,27 +36,17 @@ public final class Constants
 	
 	public static final class URLs
 	{
-		public static final String GITHUB_PAGE =
-			"https://github.com/Wurst-Imperium/Hook-Manager";
+		public static final String GITHUB_PAGE = "https://github.com/Wurst-Imperium/Hook-Manager";
 		public static final String WEBSITE = "https://www.hook-manager.tk/";
-		
 		public static final String BUGS = GITHUB_PAGE + "/labels/bug";
 		public static final String CONTRIBUTE = GITHUB_PAGE + "/fork";
-		public static final String QUESTIONS = GITHUB_PAGE
-			+ "/issues?q=label%3Aquestion";
-		public static final String SUGGESTIONS = GITHUB_PAGE
-			+ "/labels/enhancement";
+		public static final String QUESTIONS = GITHUB_PAGE + "/issues?q=label%3Aquestion";
+		public static final String SUGGESTIONS = GITHUB_PAGE + "/labels/enhancement";
 		public static final String WIKI = GITHUB_PAGE + "/wiki";
 	}
 	
 	public static final class Resources
 	{
 		public static final String HTML_DIR = "html/";
-	}
-	
-	public static final class Files
-	{
-		public static final String GA_COOKIE = CURRENT_DIRECTORY
-			+ File.separator + "ga-cookie.json";
 	}
 }

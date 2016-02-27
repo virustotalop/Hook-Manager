@@ -24,22 +24,20 @@ public class ClassDataReader extends ClassVisitor
 	{
 		super(api, new ClassWriter(ClassWriter.COMPUTE_MAXS));
 		this.jarData = jarData;
-		classData = new ClassData();
+		this.classData = new ClassData();
 	}
 	
 	@Override
-	public void visit(int version, int access, String name, String signature,
-		String superName, String[] interfaces)
+	public void visit(int version, int access, String name, String signature, String superName, String[] interfaces)
 	{
 		super.visit(version, access, name, signature, superName, interfaces);
-		jarData.addClass(name, classData);
+		this.jarData.addClass(name, classData);
 	}
 	
 	@Override
-	public MethodVisitor visitMethod(int access, String name, String desc,
-		String signature, String[] exceptions)
+	public MethodVisitor visitMethod(int access, String name, String desc,String signature, String[] exceptions)
 	{
-		classData.addMethod(name + desc, new MethodData(classData));
+		this.classData.addMethod(name + desc, new MethodData(classData));
 		return super.visitMethod(access, name, desc, signature, exceptions);
 	}
 }

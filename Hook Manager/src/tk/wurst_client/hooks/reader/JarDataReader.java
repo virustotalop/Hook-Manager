@@ -11,6 +11,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.JarEntry;
@@ -123,20 +126,33 @@ public class JarDataReader
 		}
 		
 		node.removeAllChildren();
-		packages
-			.sort((DefaultMutableTreeNode o1, DefaultMutableTreeNode o2) -> o1
-				.toString().compareToIgnoreCase(o2.toString()));
+		
+		Comparator<DefaultMutableTreeNode> nodeComparator = new Comparator<DefaultMutableTreeNode>()
+		{
+			@Override
+			public int compare(DefaultMutableTreeNode o1, DefaultMutableTreeNode o2)
+			{
+					return o1.toString().compareTo(o2.toString());
+			}
+		};
+		
+		Collections.sort(packages, nodeComparator);
+		Collections.sort(classes, nodeComparator);
+		Collections.sort(files, nodeComparator);
+		
 		for(DefaultMutableTreeNode packageNode : packages)
 			node.add(packageNode);
 		
-		classes
-			.sort((DefaultMutableTreeNode o1, DefaultMutableTreeNode o2) -> o1
-				.toString().compareToIgnoreCase(o2.toString()));
-		for(DefaultMutableTreeNode classNode : classes)
-			node.add(classNode);
 		
-		files.sort((DefaultMutableTreeNode o1, DefaultMutableTreeNode o2) -> o1
-			.toString().compareToIgnoreCase(o2.toString()));
+			//classes
+			//.sort((DefaultMutableTreeNode o1, DefaultMutableTreeNode o2) -> o1
+			//	.toString().compareToIgnoreCase(o2.toString()));
+		for(DefaultMutableTreeNode classNode : classes)
+        node.add(classNode);
+		
+		
+		//files.sort((DefaultMutableTreeNode o1, DefaultMutableTreeNode o2) -> o1
+	//		.toString().compareToIgnoreCase(o2.toString()));
 		for(DefaultMutableTreeNode fileNode : files)
 			node.add(fileNode);
 	}

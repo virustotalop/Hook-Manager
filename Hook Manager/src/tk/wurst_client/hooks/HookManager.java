@@ -7,12 +7,12 @@
  */
 package tk.wurst_client.hooks;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class HookManager
 {
-	private static HashMap<String, HashSet<Hook>> hooks = new HashMap<>();
+	private static HashMap<String, Hook> hooks = new HashMap<>();
 	
 	public static void hook(String method)
 	{
@@ -22,24 +22,25 @@ public class HookManager
 	public static void hook(String method, Object[] params)
 	{
 		if(hooks.containsKey(method))
-			for(Hook hook : hooks.get(method))
-				hook.hook(params);
+			 hooks.get(method).hook(params);
 	}
 	
 	public static void addHook(String method, Hook hook)
 	{
 		if(!hooks.containsKey(method))
-			hooks.put(method, new HashSet<>());
-		hooks.get(method).add(hook);
+		hooks.put(method, hook);
 	}
 	
 	public static void removeHook(String method, Hook hook)
 	{
-		hooks.get(method).remove(hook);
+		hooks.remove(hook);
 	}
 	
-	public static interface Hook
+	public static void addMethodToHook(String hook, Method method)
 	{
-		public void hook(Object[] params);
+		if(hooks.containsKey(hook))
+		{
+			hooks.get(hook).addMethod(method);
+		}	
 	}
 }

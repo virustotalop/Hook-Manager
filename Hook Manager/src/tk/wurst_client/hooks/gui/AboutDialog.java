@@ -14,6 +14,11 @@ import tk.wurst_client.hooks.util.Util;
 
 public class AboutDialog extends HTMLDialog
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4666618174284680271L;
+
 	public AboutDialog(Component parent)
 	{
 		super(parent);

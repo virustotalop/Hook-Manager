@@ -25,18 +25,19 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import tk.wurst_client.analytics.Analytics;
-import tk.wurst_client.analytics.AnalyticsCookieManager;
 import tk.wurst_client.hooks.injector.JarHookInjector;
 import tk.wurst_client.hooks.reader.JarDataReader;
 import tk.wurst_client.hooks.reader.data.ClassData;
 import tk.wurst_client.hooks.reader.data.JarData;
 import tk.wurst_client.hooks.util.Constants;
 import tk.wurst_client.hooks.util.Util;
-import tk.wurst_client.update.Updater;
 
 public class MainFrame extends JFrame
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4449425647308300547L;
 	private HTMLPanel editor;
 	private EditorBridge editorBridge;
 	private JTree tree;
@@ -44,7 +45,6 @@ public class MainFrame extends JFrame
 	private File inputFile;
 	private File settingsFile;
 	
-	private Analytics analytics;
 	private JarDataReader jarDataReader;
 	private JarData settings;
 	private JMenuItem mntmSaveSettingsAs;
@@ -61,20 +61,7 @@ public class MainFrame extends JFrame
 			{
 				try
 				{
-					UIManager.setLookAndFeel(UIManager
-						.getSystemLookAndFeelClassName());
-					Updater updater = new Updater();
-					updater.checkForUpdate();
-					if(updater.isOutdated())
-						if(JOptionPane.showConfirmDialog(null, "Version "
-							+ updater.getLatestVersion() + " is available.\n"
-							+ "Would you like to update?", "Update Available",
-							JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
-						{
-							Util.openInBrowser(Constants.URLs.GITHUB_PAGE
-								+ "/releases/latest");
-							System.exit(0);
-						}
+					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 					MainFrame frame = new MainFrame();
 					frame.setVisible(true);
 				}catch(Exception e)
@@ -89,11 +76,8 @@ public class MainFrame extends JFrame
 	 * Create the frame.
 	 */
 	public MainFrame()
-	{
-		analytics = new Analytics("UA-63411855-2", "client.hook-manager.tk");
-		
-		setIconImage(Toolkit.getDefaultToolkit().getImage(
-			MainFrame.class.getResource("/tk/wurst_client/hooks/icon.png")));
+	{	
+		setIconImage(Toolkit.getDefaultToolkit().getImage(MainFrame.class.getResource("/tk/wurst_client/hooks/icon.png")));
 		setMinimumSize(new Dimension(1024, 640));
 		setLocationByPlatform(true);
 		setTitle("Hook Manager v" + Constants.VERSION);
@@ -248,43 +232,6 @@ public class MainFrame extends JFrame
 		JMenu mnOptions = new JMenu("Options");
 		menuBar.add(mnOptions);
 		
-		JMenu mnGoogleAnalytics = new JMenu("Google Analytics");
-		mnOptions.add(mnGoogleAnalytics);
-		
-		JCheckBoxMenuItem chckbxmntmEnabled =
-			new JCheckBoxMenuItem("Enabled",
-				AnalyticsCookieManager.getCookie().enabled);
-		chckbxmntmEnabled.addActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				if(chckbxmntmEnabled.isSelected())
-				{
-					AnalyticsCookieManager.getCookie().enabled = true;
-					analytics.trackEvent("analytics", "enable");
-				}else
-				{
-					analytics.trackEvent("analytics", "disable");
-					AnalyticsCookieManager.getCookie().enabled = false;
-				}
-				AnalyticsCookieManager.saveCookie();
-			}
-		});
-		mnGoogleAnalytics.add(chckbxmntmEnabled);
-		
-		JMenuItem mntmPrivacyPolicy = new JMenuItem("Privacy Policy");
-		mntmPrivacyPolicy.addActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				analytics.trackEvent("analytics", "view privacy policy");
-				Util.openInBrowser("https://www.google.com/policies/privacy/");
-			}
-		});
-		mnGoogleAnalytics.add(mntmPrivacyPolicy);
-		
 		JMenu mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
 		
@@ -428,7 +375,14 @@ public class MainFrame extends JFrame
 				editorBridge.setClassData(
 					path.substring(path.lastIndexOf("/") + 1), classData);
 				editor.setHTMLFile("editor-edit.html");
-				editor.doWhenFinished(() -> editor.setBridge(editorBridge));
+				editor.doWhenFinished(new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						editor.setBridge(editorBridge);
+					}
+				});
 			}
 		});
 		jarDataReader = new JarDataReader(tree);
@@ -447,7 +401,5 @@ public class MainFrame extends JFrame
 			}
 		});
 		splitPane.setRightComponent(editor);
-		
-		analytics.trackPageView("/", "Hook Manager");
 	}
 }

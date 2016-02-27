@@ -11,6 +11,11 @@ import java.awt.Component;
 
 public class LicenseDialog extends HTMLDialog
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6034582103859943607L;
+
 	public LicenseDialog(Component parent)
 	{
 		super(parent);

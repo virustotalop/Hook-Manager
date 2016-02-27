@@ -26,6 +26,10 @@ import tk.wurst_client.hooks.util.Constants;
 
 public class HTMLPanel extends JPanel
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 230829324980154219L;
 	private JFXPanel jfxPanel = new JFXPanel();
 	private WebEngine engine;
 	private Object bridge;
@@ -56,7 +60,7 @@ public class HTMLPanel extends JPanel
 		return htmlFile;
 	}
 	
-	public void setHTMLFile(String filename)
+	public void setHTMLFile(final String filename)
 	{
 		Platform.runLater(new Runnable()
 		{
@@ -64,18 +68,17 @@ public class HTMLPanel extends JPanel
 			public void run()
 			{
 				String url;
-				url =
-					getClass().getClassLoader()
-						.getResource(Constants.Resources.HTML_DIR + filename)
-						.toExternalForm()
-						.replace("rsrc:", new File(".").toURI().toString());
+				url = getClass().getClassLoader()
+				.getResource(Constants.Resources.HTML_DIR + filename)
+				.toExternalForm()
+				.replace("rsrc:", new File(".").toURI().toString());
 				engine.load(url);
 			}
 		});
 		htmlFile = filename;
 	}
 	
-	public void setHTML(String html)
+	public void setHTML(final String html)
 	{
 		Platform.runLater(new Runnable()
 		{
@@ -92,15 +95,14 @@ public class HTMLPanel extends JPanel
 		return bridge;
 	}
 	
-	public void setBridge(Object bridge)
+	public void setBridge(final Object bridge)
 	{
 		Platform.runLater(new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				((JSObject)engine.executeScript("window")).setMember("java",
-					bridge);
+				((JSObject)engine.executeScript("window")).setMember("java",bridge);
 			}
 		});
 		this.bridge = bridge;
@@ -111,12 +113,19 @@ public class HTMLPanel extends JPanel
 		return engine.executeScript(script);
 	}
 	
-	public void executeScriptAsync(String script)
+	public void executeScriptAsync(final String script)
 	{
-		Platform.runLater(() -> executeScript(script));
+		Platform.runLater(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				executeScript(script);
+			}
+		});
 	}
 	
-	public void doWhenFinished(Runnable task)
+	public void doWhenFinished(final Runnable task)
 	{
 		Platform.runLater(new Runnable()
 		{
